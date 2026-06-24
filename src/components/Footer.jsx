@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import ''
+import '../Styles/Footer.css'
 
 function Footer() {
   return (
@@ -15,13 +15,13 @@ function Footer() {
           <h4>Navigate</h4>
           <ul>
             {[
-              { to: '/',             label: 'Home' },
-              { to: '/about',        label: 'About' },
-              { to: '/features',     label: 'Features' },
+              { to: '/', label: 'Home' },
+              { to: '/about', label: 'About' },
+              { to: '/features', label: 'Features' },
               { to: '/how-it-works', label: 'How It Works' },
-              { to: '/events',       label: 'Events' },
-              { to: '/donate',       label: 'Donate' },
-              { to: '/contact',      label: 'Contact' },
+              { to: '/events', label: 'Events' },
+              { to: '/donate', label: 'Donate' },
+              { to: '/contact', label: 'Contact' },
             ].map(({ to, label }) => (
               <li key={to}><NavLink to={to}>{label}</NavLink></li>
             ))}

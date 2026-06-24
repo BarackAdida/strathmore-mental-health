@@ -1,4 +1,4 @@
-import '..Styles/About.css';
+import '../Styles/About.css';
 
 const team = [
   { name: 'Counseling Team', role: 'Licensed professionals from Strathmore`s Student Welfare office, verified and available on the platform.' },
