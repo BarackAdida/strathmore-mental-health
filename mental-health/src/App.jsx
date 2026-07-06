@@ -8,6 +8,9 @@ import HowItWorks from './pages/HowItWorks';
 import Events from './pages/Events';
 import Donate from './pages/Donate';
 import Contact from './pages/Contact';
+import Login from './Auth/Login';
+import Signup from './Auth/Signup';
+import DoctorsPage from './doctors/DoctorsPage';
 
 function App() {
   return (
@@ -15,6 +18,9 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<Signup />} />
+        <Route path="doctors" element={<DoctorsPage />} />
         <Route path="/about" element={<About />} />
         <Route path="/features" element={<Features />} />
         <Route path="/how-it-works" element={<HowItWorks />} />
