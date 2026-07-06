@@ -39,7 +39,8 @@
   align-items: center;
   justify-content: center;
 }
-.event-day { font-family: 'Lora', serif; font-size: 1.3rem; font-weight: 600; color: var(--moss); line-height: 1; }
+ /* font-family: 'Lora', serif;  add to line 43 */
+.event-day { font-size: 1.3rem; font-weight: 600; color: var(--moss); line-height: 1; } 
 .event-mon { font-size: 10px; font-weight: 600; letter-spacing: 1px; color: var(--moss); text-transform: uppercase; margin-top: 2px; }
 
 .event-body { flex: 1; min-width: 0; }

@@ -1,16 +1,65 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# API – Server Setup
 
-Currently, two official plugins are available:
+Simple steps to get the server running locally.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Prerequisites
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Node.js** (v14 or higher)
+- **npm** (comes with Node)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 1. Install Dependencies
+
+Navigate to the `server` folder and run:
+
+```bash
+npm install
+```
+
+---
+
+## 2. Configure Environment Variables
+
+Create a `.env` file in the `server` folder with the following content:
+
+```env
+PORT=5000
+SESSION_SECRET=your_secret_key_here
+```
+
+> ⚠️ Replace `your_secret_key_here` with any random string (e.g., `abc123!@#`).
+
+---
+
+## 3. Start the Server
+
+```bash
+npm start
+```
+
+For development with auto‑restart (optional):
+
+```bash
+npx nodemon index.js
+```
+
+---
+
+## 4. Verify
+
+The server will be running at **http://localhost:5000**.
+
+You should see the message: `Doctor API running` when you visit that URL in your browser.
+
+---
+
+## Notes
+
+- The database is stored in `server/db/db.json`. It is created automatically with empty user/doctor lists.
+- All doctor routes require an active session (login via `/api/auth/login` or signup `/api/auth/signup`).
+
+That’s it – your API is ready for local testing.

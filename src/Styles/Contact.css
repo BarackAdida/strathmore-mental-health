@@ -67,7 +67,7 @@
 .form-group input,
 .form-group select,
 .form-group textarea {
-  font-family: 'Inter', sans-serif;
+  /* font-family: 'Inter', sans-serif; */
   font-size: 14px;
   color: var(--ink);
   background: var(--sand);
