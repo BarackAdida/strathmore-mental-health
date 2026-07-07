@@ -8,6 +8,7 @@ import HowItWorks from './pages/HowItWorks';
 import Events from './pages/Events';
 import Donate from './pages/Donate';
 import Contact from './pages/Contact';
+import Ticket from './pages/Tickets';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/events" element={<Events />} />
         <Route path="/donate" element={<Donate />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/ticket" element={<Ticket />} />
       </Routes>
       <Footer />
     </BrowserRouter>

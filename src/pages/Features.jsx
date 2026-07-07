@@ -1,4 +1,5 @@
-import '../Styles/Features.css'
+import { useState } from 'react';
+import '../Styles/Features.css';
 
 const features = [
   {
@@ -42,8 +43,8 @@ const features = [
 const plans = [
   {
     name: 'Basic',
-    price: 'Free',
-    cadence: 'Always free for Strathmore students',
+    price: '200',
+    cadence: 'Good for Students',
     perk: 'Mental health newsletter — once a week',
     features: [
       'Full access to counselor booking & peer support',
@@ -56,7 +57,7 @@ const plans = [
   },
   {
     name: 'Premium',
-    price: 'KES 300',
+    price: 'KES 600',
     cadence: 'per semester',
     perk: 'Mental health newsletter — three times a week',
     features: [
@@ -71,6 +72,130 @@ const plans = [
 ];
 
 function Features() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [step, setStep] = useState(1);          // 1: payment method, 2: confirm, 3: loading, 4: success
+  const [paymentMethod, setPaymentMethod] = useState('card');
+  const [selectedPlan, setSelectedPlan] = useState('');
+
+  const openModal = (planName) => {
+    setSelectedPlan(planName);
+    setModalOpen(true);
+    setStep(1);
+    setPaymentMethod('card');
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setStep(1);
+    setPaymentMethod('card');
+  };
+
+  const handleConfirm = () => {
+    setStep(3); // show loading
+    // Simulate payment processing
+    setTimeout(() => {
+      setStep(4); // success
+    }, 2500);
+  };
+
+  const renderModalContent = () => {
+    switch (step) {
+      case 1:
+        return (
+          <>
+            <h3>Choose Payment Method</h3>
+            <div className="modal-payment-options">
+              <label>
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="card"
+                  checked={paymentMethod === 'card'}
+                  onChange={() => setPaymentMethod('card')}
+                />
+                Card
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="mpesa"
+                  checked={paymentMethod === 'mpesa'}
+                  onChange={() => setPaymentMethod('mpesa')}
+                />
+                M‑Pesa
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="airtel"
+                  checked={paymentMethod === 'airtel'}
+                  onChange={() => setPaymentMethod('airtel')}
+                />
+                Airtel Money
+              </label>
+            </div>
+            <button
+              className="btn-primary modal-next"
+              onClick={() => setStep(2)}
+            >
+              Next
+            </button>
+          </>
+        );
+
+      case 2:
+        return (
+          <>
+            <h3>Confirm Payment</h3>
+            <div className="modal-summary">
+              <p><strong>Plan:</strong> {selectedPlan}</p>
+              <p><strong>Payment Method:</strong> {paymentMethod}</p>
+              <p><strong>Amount:</strong> {selectedPlan === 'Premium' ? 'KES 300' : 'Free'}</p>
+            </div>
+            <button
+              className="btn-primary modal-confirm"
+              onClick={handleConfirm}
+            >
+              Confirm Payment
+            </button>
+          </>
+        );
+
+      case 3:
+        return (
+          <>
+            <h3>Processing Payment...</h3>
+            <div className="modal-spinner"></div>
+            <p>Please wait a moment</p>
+          </>
+        );
+
+      case 4:
+        return (
+          <>
+            <div className="modal-success">
+              <div className="checkmark-circle">
+                <svg className="checkmark" viewBox="0 0 52 52">
+                  <circle className="checkmark-circle-path" cx="26" cy="26" r="25" fill="none" />
+                  <path className="checkmark-check" d="M14 27l7 7 16-16" />
+                </svg>
+              </div>
+              <h3>Payment Confirmed!</h3>
+              <p>You are now subscribed to <strong>{selectedPlan}</strong>.</p>
+            </div>
+            <button className="btn-primary modal-close" onClick={closeModal}>
+              Done
+            </button>
+          </>
+        );
+
+      default:
+        return null;
+    }
+  };
+
   return (
     <main className="features">
 
@@ -119,7 +244,12 @@ function Features() {
                     <li key={j}>{f}</li>
                   ))}
                 </ul>
-                <button className={p.highlight ? 'btn-primary' : 'btn-ghost'}>{p.cta}</button>
+                <button
+                  className={p.highlight ? 'btn-primary' : 'btn-ghost'}
+                  onClick={() => openModal(p.name)}
+                >
+                  {p.cta}
+                </button>
               </div>
             ))}
           </div>
@@ -146,6 +276,18 @@ function Features() {
           </div>
         </div>
       </section>
+
+      {/* Modal */}
+      {modalOpen && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close-btn" onClick={closeModal}>✕</button>
+            <div className="modal-body">
+              {renderModalContent()}
+            </div>
+          </div>
+        </div>
+      )}
 
     </main>
   );
