@@ -71,7 +71,13 @@ function Events() {
                   </div>
                   <div className="event-footer">
                     <span className="event-price">{e.price}</span>
-                    <button className="btn-ghost event-btn">Get Ticket</button>
+                    <Link
+                      to="/ticket"
+                      state={{ event: e }}
+                      className="btn-ghost event-btn"
+                    >
+                      Get Ticket
+                    </Link>
                   </div>
                 </div>
               </div>
