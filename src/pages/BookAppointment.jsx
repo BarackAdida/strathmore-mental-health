@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../Styles/BookAppointment.css';
 
-// Dummy data – replace with real API data
 const psychologists = [
   'Dr. Jane Kamau',
   'Dr. Peter Ochieng',
@@ -21,8 +20,7 @@ const peers = [
 function BookAppointment() {
   const navigate = useNavigate();
 
-  // Form state
-  const [appointmentType, setAppointmentType] = useState('peer'); // 'peer', 'random', 'specific'
+  const [appointmentType, setAppointmentType] = useState('peer');
   const [selectedPsychologist, setSelectedPsychologist] = useState('');
   const [form, setForm] = useState({
     name: '',
@@ -33,7 +31,6 @@ function BookAppointment() {
     notes: '',
   });
 
-  // UI state
   const [loading, setLoading] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
 
@@ -49,7 +46,6 @@ function BookAppointment() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (!form.name || !form.email || !form.phone || !form.date || !form.time) {
       alert('Please fill in all required fields.');
       return;
@@ -61,7 +57,6 @@ function BookAppointment() {
 
     setLoading(true);
 
-    // Simulate API call
     setTimeout(() => {
       setLoading(false);
       setConfirmed(true);
@@ -70,7 +65,7 @@ function BookAppointment() {
 
   const closeConfirmation = () => {
     setConfirmed(false);
-    navigate('/'); // or '/appointments' or wherever you want
+    navigate('/');
   };
 
   return (
@@ -83,7 +78,6 @@ function BookAppointment() {
         </p>
 
         <form onSubmit={handleSubmit} className="booking-form">
-          {/* Appointment Type Selection */}
           <div className="form-section">
             <label className="section-label">Type of Appointment *</label>
             <div className="appointment-options">
@@ -117,7 +111,6 @@ function BookAppointment() {
             </div>
           </div>
 
-          {/* Specific Psychologist Dropdown (only when 'specific' is selected) */}
           {appointmentType === 'specific' && (
             <div className="form-group">
               <label htmlFor="psychologist">Select Psychologist *</label>
@@ -137,7 +130,6 @@ function BookAppointment() {
             </div>
           )}
 
-          {/* For Peer support, show a list of peers (optional) */}
           {appointmentType === 'peer' && (
             <div className="form-group peer-info">
               <label>Available Peer Counselors</label>
@@ -150,7 +142,6 @@ function BookAppointment() {
             </div>
           )}
 
-          {/* Personal Details */}
           <div className="form-group">
             <label htmlFor="name">Full Name *</label>
             <input
@@ -230,7 +221,6 @@ function BookAppointment() {
         </form>
       </div>
 
-      {/* Loading Modal */}
       {loading && (
         <div className="modal-overlay">
           <div className="modal loading-modal">
@@ -241,7 +231,6 @@ function BookAppointment() {
         </div>
       )}
 
-      {/* Confirmation Modal */}
       {confirmed && (
         <div className="modal-overlay">
           <div className="modal confirmation-modal">

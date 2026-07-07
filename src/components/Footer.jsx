@@ -20,6 +20,7 @@ function Footer() {
               { to: '/features', label: 'Features' },
               { to: '/how-it-works', label: 'How It Works' },
               { to: '/events', label: 'Events' },
+              { to: '/book-appointment', label: 'Book Appointment' }, // 👈 new
               { to: '/donate', label: 'Donate' },
               { to: '/contact', label: 'Contact' },
             ].map(({ to, label }) => (

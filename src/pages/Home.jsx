@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import '../Styles/Home.css';
 
 const stats = [
@@ -26,7 +27,26 @@ const pillars = [
 ];
 
 function Home() {
-  return (
+  const navigate = useNavigate();
+  const [moodModalOpen, setMoodModalOpen] = useState(false);
+  const [selectedMood, setSelectedMood] = useState('');
+
+  const handleMoodClick = (emoji) => {
+    setSelectedMood(emoji);
+    setMoodModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setMoodModalOpen(false);
+    setSelectedMood('');
+  };
+
+  const handleTalkYes = () => {
+    closeModal();
+    navigate('/book-appointment');
+  };
+
+  return (  
     <main className="home">
 
       {/* Hero */}
@@ -45,7 +65,13 @@ function Home() {
             <div className="hcard-label">Today's check-in</div>
             <div className="mood-row">
               {['😔','😐','🙂','😊','😄'].map((e, i) => (
-                <button key={i} className={`mood-btn ${i === 2 ? 'mood-selected' : ''}`}>{e}</button>
+                <button 
+                  key={i} 
+                  className="mood-btn"
+                  onClick={() => handleMoodClick(e)}
+                >
+                  {e}
+                </button>
               ))}
             </div>
             <div className="hcard-note">How are you feeling today? It's okay to say.</div>
@@ -94,6 +120,24 @@ function Home() {
           <Link to="/features" className="btn-primary">Explore the Platform</Link>
         </div>
       </section>
+
+      {/* Mood Modal */}
+      {moodModalOpen && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal mood-modal" onClick={(e) => e.stopPropagation()}>
+            <h2>You selected {selectedMood}</h2>
+            <p>Do you want to talk to someone about how you're feeling?</p>
+            <div className="modal-actions">
+              <button className="btn-primary" onClick={handleTalkYes}>
+                Yes, connect me
+              </button>
+              <button className="btn-ghost" onClick={closeModal}>
+                No, thanks
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </main>
   );
