@@ -1,65 +1,122 @@
+```markdown
+# Strathmore Mental Health Booking App
 
-# API – Server Setup
+A React-based web application for Strathmore University students to book confidential counseling appointments with peer supporters or psychologists.
 
-Simple steps to get the server running locally.
+## Features
 
----
+- Choose between **Peer Support**, **Random Psychologist**, or **Specific Psychologist**
+- View available peer counselors
+- Select a preferred psychologist (if applicable)
+- Fill in personal details and preferred date/time
+- Receive a confirmation modal upon successful booking
 
 ## Prerequisites
 
-- **Node.js** (v14 or higher)
-- **npm** (comes with Node)
+- **Node.js** (version 14 or higher)
+- **npm** (comes with Node.js) or **yarn**
 
----
+## Getting Started
 
-## 1. Install Dependencies
+Follow these steps to run the project locally.
 
-Navigate to the `server` folder and run:
+### 1. Clone the repository
+
+```bash
+git clone <your-repository-url>
+cd <project-folder>
+```
+
+### 2. Install dependencies
+
+Using npm:
 
 ```bash
 npm install
 ```
 
----
-
-## 2. Configure Environment Variables
-
-Create a `.env` file in the `server` folder with the following content:
-
-```env
-PORT=5000
-SESSION_SECRET=your_secret_key_here
-```
-
-> ⚠️ Replace `your_secret_key_here` with any random string (e.g., `abc123!@#`).
-
----
-
-## 3. Start the Server
+Or using yarn:
 
 ```bash
-npm start
+yarn
 ```
 
-For development with auto‑restart (optional):
+### 3. Start the development server
 
 ```bash
-npx nodemon index.js
+npm run dev
 ```
 
----
+or
 
-## 4. Verify
+```bash
+yarn dev
+```
 
-The server will be running at **http://localhost:5000**.
+This will start the Vite development server. Open [http://localhost:5173](http://localhost:5173) (or the port shown in the terminal) to view the app.
 
-You should see the message: `Doctor API running` when you visit that URL in your browser.
+### 4. Build for production
 
----
+To create a production build:
+
+```bash
+npm run build
+```
+
+or
+
+```bash
+yarn build
+```
+
+The built files will be in the `dist` folder.
+
+### 5. Preview the production build
+
+```bash
+npm run preview
+```
+
+or
+
+```bash
+yarn preview
+```
+
+This serves the built app locally for testing.
+
+## Project Structure
+
+```
+├── src
+│   ├── Styles
+│   │   └── BookAppointment.css   # Styles for the booking page
+│   ├── BookAppointment.jsx       # Main booking component
+│   └── ...                       # Other components, pages, hooks
+├── public
+├── index.html
+├── package.json
+├── vite.config.js
+└── README.md
+```
+
+## Technologies Used
+
+- [React](https://reactjs.org/) – UI library
+- [Vite](https://vitejs.dev/) – Build tool and development server
+- [React Router](https://reactrouter.com/) – Navigation between pages (if used)
+- [CSS Modules / plain CSS] – Styling (as seen in the import)
 
 ## Notes
 
-- The database is stored in `server/db/db.json`. It is created automatically with empty user/doctor lists.
-- All doctor routes require an active session (login via `/api/auth/login` or signup `/api/auth/signup`).
+- This project currently uses **dummy data** for psychologists and peer counselors. Replace with real API endpoints as needed.
+- The `navigate('/')` on confirmation redirects to the home page; adjust to your routing logic.
 
-That’s it – your API is ready for local testing.
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
+
+## License
+
+This project is for educational purposes and is not licensed for commercial use.
+```
