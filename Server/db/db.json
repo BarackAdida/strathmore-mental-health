@@ -8,5 +8,17 @@
       "createdAt": "2026-07-06T17:19:47.939Z"
     }
   ],
-  "doctors": []
+  "doctors": [
+    {
+      "id": 1,
+      "name": "Barack",
+      "specialization": "Therapy",
+      "licenseNumber": "99999",
+      "phoneNumber": "0110859228",
+      "email": "adidabarackpilly@gmail.com",
+      "createdAt": "2026-07-07T07:51:12.745Z",
+      "updatedAt": "2026-07-07T07:51:12.745Z"
+    }
+  ],
+  "events": []
 }

@@ -9,6 +9,25 @@ const DB_PATH = path.join(__dirname, '../db/db.json');
 const readDB = () => JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
 const writeDB = (data) => fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2));
 
+const isAuthenticated = (req, res, next) => {
+  if (!req.session.userId) {
+    return res.status(401).json({ error: 'Not authenticated' });
+  }
+  next();
+};
+
+const isAdmin = async (req, res, next) => {
+  if (!req.session.userId) {
+    return res.status(401).json({ error: 'Not authenticated' });
+  }
+  const db = readDB();
+  const user = db.users.find(u => u.id === req.session.userId);
+  if (!user || user.role !== 'admin') {
+    return res.status(403).json({ error: 'Admin access required' });
+  }
+  next();
+};
+
 router.post('/signup', async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -27,6 +46,7 @@ router.post('/signup', async (req, res) => {
     name,
     email,
     password: hashed,
+    role: 'user',
     createdAt: new Date().toISOString()
   };
 
@@ -34,11 +54,11 @@ router.post('/signup', async (req, res) => {
   writeDB(db);
 
   req.session.userId = newUser.id;
-  req.session.user = { id: newUser.id, name: newUser.name, email: newUser.email };
+  req.session.user = { id: newUser.id, name: newUser.name, email: newUser.email, role: newUser.role };
 
   res.status(201).json({
     message: 'User created and logged in',
-    user: { id: newUser.id, name: newUser.name, email: newUser.email }
+    user: { id: newUser.id, name: newUser.name, email: newUser.email, role: newUser.role }
   });
 });
 
@@ -60,26 +80,23 @@ router.post('/login', async (req, res) => {
   }
 
   req.session.userId = user.id;
-  req.session.user = { id: user.id, name: user.name, email: user.email };
+  req.session.user = { id: user.id, name: user.name, email: user.email, role: user.role };
 
   res.json({
     message: 'Logged in',
-    user: { id: user.id, name: user.name, email: user.email }
+    user: { id: user.id, name: user.name, email: user.email, role: user.role }
   });
 });
 
 router.post('/logout', (req, res) => {
   req.session.destroy(err => {
     if (err) return res.status(500).json({ error: 'Logout failed' });
-    res.clearCookie('connect.sid'); // default cookie name
+    res.clearCookie('connect.sid');
     res.json({ message: 'Logged out' });
   });
 });
 
-router.get('/me', (req, res) => {
-  if (!req.session.userId) {
-    return res.status(401).json({ error: 'Not authenticated' });
-  }
+router.get('/me', isAuthenticated, (req, res) => {
   const db = readDB();
   const user = db.users.find(u => u.id === req.session.userId);
   if (!user) {
@@ -88,6 +105,24 @@ router.get('/me', (req, res) => {
   }
   const { password, ...userData } = user;
   res.json(userData);
+});
+
+
+router.get('/admin/users', isAdmin, (req, res) => {
+  const db = readDB();
+  const users = db.users.map(({ password, ...user }) => user);
+  res.json(users);
+});
+
+
+router.post('/admin/promote/:id', isAdmin, (req, res) => {
+  const db = readDB();
+  const user = db.users.find(u => u.id === parseInt(req.params.id));
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  if (user.role === 'admin') return res.status(400).json({ error: 'User is already admin' });
+  user.role = 'admin';
+  writeDB(db);
+  res.json({ message: 'User promoted to admin', user: { id: user.id, name: user.name, role: user.role } });
 });
 
 module.exports = router;

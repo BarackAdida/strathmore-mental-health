@@ -4,6 +4,7 @@ const cors = require('cors')
 const session = require('express-session')
 const authRoutes = require('./routes/auth')
 const doctorRoutes = require('./routes/doctors')
+const eventRoutes = require('./routes/events');
 
 const app = express();
 const PORT = process.env.PORT || 5000
@@ -27,7 +28,8 @@ app.use(cors({
 app.use(express.json())
 
 app.use('/api/auth', authRoutes)
-app.use('api/doctors', doctorRoutes)
+app.use('/api/doctors', doctorRoutes)
+app.use('/api/events')
 
 app.get('/', (req, res) => {
     res.send('API running');
