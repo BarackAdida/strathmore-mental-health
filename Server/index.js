@@ -29,7 +29,7 @@ app.use(express.json())
 
 app.use('/api/auth', authRoutes)
 app.use('/api/doctors', doctorRoutes)
-app.use('/api/events')
+app.use('/api/events', eventRoutes)
 
 app.get('/', (req, res) => {
     res.send('API running');
