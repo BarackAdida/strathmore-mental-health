@@ -23,7 +23,7 @@ function Navbar() {
           { to: '/about',           label: 'About' },
           { to: '/features',        label: 'Features' },
           { to: '/events',          label: 'Events' },
-          { to: '/book-appointment', label: 'Book Appointment' }, // 👈 new link
+          { to: '/book-appointment', label: 'Book Appointment' },
           { to: '/donate',          label: 'Donate' },
           { to: '/contact',         label: 'Contact' },
           { to: '/authentication',    label: 'Login' },
