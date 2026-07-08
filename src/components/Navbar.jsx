@@ -8,7 +8,7 @@ function Navbar() {
   return (
     <nav className="navbar">
       <NavLink to="/" className="nav-logo" onClick={() => setOpen(false)}>
-        Strathmore <span>Mental Health</span>
+        Mindbridge <span>Mental Health</span>
       </NavLink>
 
       <button className="nav-toggle" onClick={() => setOpen(!open)} aria-label="Toggle menu">
@@ -26,6 +26,7 @@ function Navbar() {
           { to: '/book-appointment', label: 'Book Appointment' },
           { to: '/donate',          label: 'Donate' },
           { to: '/contact',         label: 'Contact' },
+          { to: '/authentication',    label: 'Login' },
         ].map(({ to, label }) => (
           <li key={to}>
             <NavLink

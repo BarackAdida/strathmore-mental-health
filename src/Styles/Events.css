@@ -97,3 +97,16 @@
   .event-card { flex-direction: column; }
   .event-date { flex-direction: row; gap: 6px; width: fit-content; padding: 6px 14px; height: auto; }
 }
+.events-cta .btn-primary {
+  display: inline-block;
+  padding: 10px 28px;
+  border-radius: 30px;
+  background: #1a2639;
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.events-cta .btn-primary:hover {
+  background: #0b1e33;
+}

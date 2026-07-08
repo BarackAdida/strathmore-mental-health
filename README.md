@@ -12,9 +12,12 @@ A React-based web application for Strathmore University students to book confide
 - Receive a confirmation modal upon successful booking
 
 ## Prerequisites
-
-- **Node.js** (version 14 or higher)
-- **npm** (comes with Node.js) or **yarn**
+- *.env* file with:
+    VITE_ADMIN_USER
+    VITE_ADMIN_PASS
+    ***When the web runs, it will automatically create an admin user***
+- **Node.js** (v14 or higher)
+- **npm** (comes with Node)
 
 ## Getting Started
 

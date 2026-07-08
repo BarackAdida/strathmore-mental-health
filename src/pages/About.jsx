@@ -1,8 +1,8 @@
 import '../Styles/About.css';
 
 const team = [
-  { name: 'Counseling Team', role: 'Licensed professionals from Strathmore`s Student Welfare office, verified and available on the platform.' },
-  { name: 'Peer Volunteers', role: 'Trained Strathmore students who understand campus life and act as your first point of contact.' },
+  { name: 'Counseling Team', role: 'Licensed professionals verified and available on the platform.' },
+  { name: 'Peer Volunteers', role: 'Trained students who understand campus life and act as your first point of contact.' },
   { name: 'Tech & Product', role: 'A student-led team building and maintaining the platform right here at Strathmore.' },
 ];
 
@@ -21,7 +21,7 @@ function About() {
         <div className="section-inner">
           <div className="section-label">Our Story</div>
           <h1>Mental health support that actually fits university life</h1>
-          <p>Strathmore Mental Health was born out of a simple observation: Strathmore has the counselors, the Student Welfare office, and the will — but students weren't reaching out. Stigma, fear of being seen, and long wait times kept help out of reach.</p>
+          <p>MindBridge Mental Health was born out of a simple observation: Strathmore has the counselors, the Student Welfare office, and the will — but students weren't reaching out. Stigma, fear of being seen, and long wait times kept help out of reach.</p>
           <p>We set out to remove every barrier between a student in need and the support they deserve.</p>
         </div>
       </section>
@@ -31,7 +31,7 @@ function About() {
           <div className="mission-text">
             <div className="section-label">Mission</div>
             <h2>A campus where no student suffers alone</h2>
-            <p>We exist to make mental healthcare at Strathmore University as normal and accessible as visiting the library. Anonymous, available, and built for students — not for institutions.</p>
+            <p>We exist to make mental healthcare at Universities as normal and accessible as visiting the library. Anonymous, available, and built for students — not for institutions.</p>
           </div>
           <div className="mission-quote">
             <blockquote>
@@ -60,8 +60,8 @@ function About() {
 
       <section className="team-section">
         <div className="section-inner">
-          <div className="section-label">Who's Behind Strathmore Mental Health</div>
-          <h2>Built with Strathmore, for Strathmore</h2>
+          <div className="section-label">Who's Behind MindBridge</div>
+          <h2>Built with Strathmore, for Every Student</h2>
           <div className="team-grid">
             {team.map((t, i) => (
               <div key={i} className="team-card">
