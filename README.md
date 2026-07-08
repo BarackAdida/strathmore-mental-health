@@ -6,7 +6,10 @@ Simple steps to get the server running locally.
 ---
 
 ## Prerequisites
-
+- *.env* file with:
+    VITE_ADMIN_USER
+    VITE_ADMIN_PASS
+    ***When the web runs, it will automatically create an admin user***
 - **Node.js** (v14 or higher)
 - **npm** (comes with Node)
 
