@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLocalStorage } from '../context/hook/useLocalStorage';
 import '../Styles/BookAppointment.css';
 
 const psychologists = [
@@ -19,6 +20,8 @@ const peers = [
 
 function BookAppointment() {
   const navigate = useNavigate();
+  const [appointments, setAppointments] = useLocalStorage('appointments', []);
+  const [currentUser] = useLocalStorage('currentUser', null);
 
   const [appointmentType, setAppointmentType] = useState('peer');
   const [selectedPsychologist, setSelectedPsychologist] = useState('');
@@ -33,6 +36,7 @@ function BookAppointment() {
 
   const [loading, setLoading] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
+  const [newAppointment, setNewAppointment] = useState(null); // holds the appointment object before saving
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -57,15 +61,75 @@ function BookAppointment() {
 
     setLoading(true);
 
+    // Simulate API call
     setTimeout(() => {
       setLoading(false);
+      
+      // Build the appointment object
+      const dateObj = new Date(form.date);
+      const day = String(dateObj.getDate()).padStart(2, '0');
+      const month = dateObj.toLocaleString('default', { month: 'short' }).toUpperCase();
+
+      let title = '';
+      let description = form.notes || 'No additional notes.';
+      let location = 'Strathmore University';
+
+      if (appointmentType === 'peer') {
+        title = `Peer Support Session with ${peers[0].split('(')[0].trim()}`; // placeholder; we could assign random
+        title = 'Peer Support Session';
+        description = `Peer counseling session. ${form.notes || 'General check-in.'}`;
+      } else if (appointmentType === 'random') {
+        title = 'Session with Random Psychologist';
+        description = `Random psychologist assignment. ${form.notes || 'General counseling.'}`;
+      } else if (appointmentType === 'specific') {
+        title = `Session with ${selectedPsychologist}`;
+        description = `Appointment with ${selectedPsychologist}. ${form.notes || 'General counseling.'}`;
+      }
+
+      // Build the appointment object with all fields
+      const appointment = {
+        id: Date.now(),
+        title,
+        description,
+        day,
+        month,
+        time: form.time,
+        location,
+        type: appointmentType,
+        psychologist: appointmentType === 'specific' ? selectedPsychologist : null,
+        userName: form.name,
+        userEmail: form.email,
+        userPhone: form.phone,
+        notes: form.notes,
+        date: form.date,
+        createdAt: new Date().toISOString(),
+        username: currentUser ? currentUser.username : 'guest',
+      };
+
+      setNewAppointment(appointment);
       setConfirmed(true);
     }, 2500);
   };
 
   const closeConfirmation = () => {
+    // Save the appointment to localStorage
+    if (newAppointment) {
+      setAppointments([...appointments, newAppointment]);
+    }
     setConfirmed(false);
-    navigate('/');
+    setNewAppointment(null);
+    // Reset form (optional)
+    setForm({
+      name: '',
+      email: '',
+      phone: '',
+      date: '',
+      time: '',
+      notes: '',
+    });
+    setAppointmentType('peer');
+    setSelectedPsychologist('');
+    navigate('/profile'); // Go to dashboard
   };
 
   return (

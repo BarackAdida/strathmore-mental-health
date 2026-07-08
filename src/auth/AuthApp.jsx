@@ -1,15 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from '../context/hook/useLocalStorage';
 import '../Styles/AuthApp.css';
 
 function AuthApp() {
+  const navigate = useNavigate();
   const [users, setUsers] = useLocalStorage('registeredUsers', []);
   const [currentUser, setCurrentUser] = useLocalStorage('currentUser', null);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState('');
+
+  // If already logged in, go to profile
+  useEffect(() => {
+    if (currentUser) {
+      navigate('/profile');
+    }
+  }, [currentUser, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,6 +33,7 @@ function AuthApp() {
         setCurrentUser({ username: foundUser.username });
         setUsername('');
         setPassword('');
+        navigate('/profile');
       } else {
         setError('Invalid username or password');
       }
@@ -31,71 +42,95 @@ function AuthApp() {
         setError('Username already taken');
         return;
       }
-      if (username.length < 3 || password.length < 4) {
-        setError('Username (min 3) and Password (min 4) required');
+      if (username.length < 3 || password.length < 4 || !email.includes('@')) {
+        setError('Please fill all fields correctly');
         return;
       }
-
-      const newUser = { username, password };
+      const newUser = { username, password, email };
       setUsers([...users, newUser]);
       setCurrentUser({ username });
       setUsername('');
       setPassword('');
+      setEmail('');
+      navigate('/profile');
     }
   };
 
-  const handleLogout = () => {
-    setCurrentUser(null);
-  };
-
-  if (currentUser) {
-    return (
-      <div className="dashboard">
-        <div className="dashboard-card">
-          <h2 className="dashboard-greeting">Welcome, {currentUser.username}!</h2>
-          <p className="dashboard-message">You are now logged in to your secure area.</p>
-          <button className="dashboard-logout-btn" onClick={handleLogout}>
-            Logout
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="auth-wrapper">
-      <div className="auth-container">
-        <h2 className="auth-title">{isLogin ? 'Welcome Back' : 'Create Account'}</h2>
-        <form className="auth-form" onSubmit={handleSubmit}>
-          <div className="auth-field">
+    <div className="auth-card">
+      <h1 className="auth-heading">Welcome!</h1>
+      <p className="auth-subheading">
+        {isLogin ? 'Sign in to your account' : 'Create a new account'}
+      </p>
+
+      <form onSubmit={handleSubmit} className="auth-form">
+        <div className="form-group">
+          <label className="form-label">Name</label>
+          <input
+            type="text"
+            className="auth-input"
+            placeholder="Your name"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </div>
+
+        {!isLogin && (
+          <div className="form-group">
+            <label className="form-label">E‑mail</label>
             <input
+              type="email"
               className="auth-input"
-              type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
-          <div className="auth-field">
-            <input
-              className="auth-input"
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+        )}
+
+        <div className="form-group">
+          <label className="form-label">Password</label>
+          <input
+            type="password"
+            className="auth-input"
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+
+        {isLogin && (
+          <div className="form-options">
+            <label className="remember-me">
+              <input type="checkbox" /> remember me?
+            </label>
+            <a href="#" className="forgot-link">forgot password?</a>
           </div>
-          {error && <p className="auth-error">{error}</p>}
-          <button className="auth-submit-btn" type="submit">
-            {isLogin ? 'Login' : 'Sign Up'}
-          </button>
-        </form>
-        <button className="auth-toggle-btn" onClick={() => setIsLogin(!isLogin)}>
-          {isLogin ? 'Need an account? Sign up' : 'Already have an account? Login'}
+        )}
+
+        {error && <p className="auth-error">{error}</p>}
+
+        <button type="submit" className="auth-submit">
+          {isLogin ? 'Login' : 'Create →'}
         </button>
-      </div>
+      </form>
+
+      {!isLogin && (
+        <p className="social-note">Or create account using social media!</p>
+      )}
+
+      <button
+        className="auth-toggle"
+        onClick={() => {
+          setIsLogin(!isLogin);
+          setError('');
+        }}
+      >
+        {isLogin ? 'Create account!' : 'Already have an account? Login'}
+      </button>
     </div>
   );
 }

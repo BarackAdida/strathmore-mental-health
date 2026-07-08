@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
-import '../Styles/Events.css'
+import { useState } from 'react';
+import { useLocalStorage } from '../context/hook/useLocalStorage';
+import '../Styles/Events.css';
 
-const events = [
+const DEFAULT_EVENTS = [
   {
+    id: 1,
     date: { day: '08', mon: 'JUL' },
     title: 'Mindfulness & Movement Workshop',
     desc: 'A gentle introduction to breathing techniques and movement-based stress release, led by a Strathmore counselor.',
@@ -11,39 +14,48 @@ const events = [
     price: 'Free for students',
     tag: 'Workshop',
   },
-  {
-    date: { day: '15', mon: 'JUL' },
-    title: 'Exam Season Wind-Down',
-    desc: 'Music, journaling stations, and a guided relaxation session to help you decompress before finals week begins.',
-    location: 'Student Centre Lawn',
-    time: '2:00 PM – 6:00 PM',
-    price: 'KES 200',
-    tag: 'Community',
-  },
-  {
-    date: { day: '22', mon: 'JUL' },
-    title: 'Peer Support Volunteer Training',
-    desc: 'A half-day training for students interested in becoming certified peer listeners on the platform.',
-    location: 'Lecture Hall 4',
-    time: '9:00 AM – 1:00 PM',
-    price: 'Free, limited seats',
-    tag: 'Training',
-  },
-  {
-    date: { day: '02', mon: 'AUG' },
-    title: 'Art Therapy Pop-Up',
-    desc: 'Drop in any time — no experience needed. Paint, sketch, or just sit with others in a low-pressure creative space.',
-    location: 'Block A Atrium',
-    time: '11:00 AM – 4:00 PM',
-    price: 'Free for students',
-    tag: 'Wellbeing',
-  },
+  // ... add your other default events here (id: 2, 3, 4)
 ];
 
 function Events() {
+  const [events] = useLocalStorage('events', DEFAULT_EVENTS);
+  const [bookings, setBookings] = useLocalStorage('bookings', []);
+  const [currentUser] = useLocalStorage('currentUser', null);
+
+  // Modal state
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedEventId, setSelectedEventId] = useState(null);
+
+  const handleBookClick = (eventId) => {
+    if (bookings.includes(eventId)) {
+      alert('You have already booked this event.');
+      return;
+    }
+    setSelectedEventId(eventId);
+    setModalOpen(true);
+  };
+
+  const confirmBooking = () => {
+    if (selectedEventId !== null) {
+      setBookings([...bookings, selectedEventId]);
+      setModalOpen(false);
+      setSelectedEventId(null);
+      alert('Booking confirmed!');
+    }
+  };
+
+  const cancelBooking = () => {
+    setModalOpen(false);
+    setSelectedEventId(null);
+  };
+
+  const isBooked = (eventId) => bookings.includes(eventId);
+
+  const selectedEvent = events.find(e => e.id === selectedEventId);
+
   return (
     <main className="events">
-
+      {/* Hero – unchanged */}
       <section className="events-hero">
         <div className="section-inner">
           <div className="section-label">Wellness Events</div>
@@ -55,8 +67,8 @@ function Events() {
       <section className="events-grid-section">
         <div className="section-inner">
           <div className="events-grid">
-            {events.map((e, i) => (
-              <div key={i} className="event-card">
+            {events.map((e) => (
+              <div key={e.id} className="event-card">
                 <div className="event-date">
                   <span className="event-day">{e.date.day}</span>
                   <span className="event-mon">{e.date.mon}</span>
@@ -71,13 +83,16 @@ function Events() {
                   </div>
                   <div className="event-footer">
                     <span className="event-price">{e.price}</span>
-                    <Link
-                      to="/ticket"
-                      state={{ event: e }}
-                      className="btn-ghost event-btn"
-                    >
-                      Get Ticket
-                    </Link>
+                    {isBooked(e.id) ? (
+                      <span className="booked-badge">✓ Booked</span>
+                    ) : (
+                      <button
+                        className="btn-ghost event-btn"
+                        onClick={() => handleBookClick(e.id)}
+                      >
+                        Book Now
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -86,14 +101,46 @@ function Events() {
         </div>
       </section>
 
+      {/* CTA section – replaced Admin Panel with Profile link */}
       <section className="events-cta">
         <div className="section-inner">
-          <h2>Hosting a wellness event on campus?</h2>
-          <p>Student clubs, faculties, and the Student Welfare office can list events and manage ticketing directly through the platform.</p>
-          <Link to="/contact" className="btn-primary">Propose an Event</Link>
+          <h2>View all your booked events</h2>
+          <p>
+            {currentUser
+              ? `You are logged in as ${currentUser.username}. See your upcoming events in one place.`
+              : 'Log in to access your personal dashboard and manage your event bookings.'}
+          </p>
+          {currentUser ? (
+            <Link to="/profile" className="btn-primary">
+              View in Profile
+            </Link>
+          ) : (
+            <Link to="/authentication" className="btn-primary">
+              Login to view your profile
+            </Link>
+          )}
         </div>
       </section>
 
+      {/* Booking confirmation modal */}
+      {modalOpen && (
+        <div className="modal-overlay" onClick={cancelBooking}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>Confirm Booking</h3>
+            <p>
+              Are you sure you want to book <strong>{selectedEvent?.title}</strong>?
+            </p>
+            <div className="modal-actions">
+              <button className="modal-btn modal-cancel" onClick={cancelBooking}>
+                Cancel
+              </button>
+              <button className="modal-btn modal-confirm" onClick={confirmBooking}>
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

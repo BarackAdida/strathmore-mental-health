@@ -1,0 +1,317 @@
+/* Use the same variables and base styles as Events.css */
+.dashboard {
+  padding-bottom: 60px;
+}
+
+.section-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+/* --- Header --- */
+.dashboard-header {
+  padding: 32px 0 24px;
+  background: var(--sand, #f8f5f0);
+  border-bottom: 1px solid var(--sand-dark, #e8e0d8);
+}
+
+.user-greeting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.user-greeting h2 {
+  font-size: 1.5rem;
+  color: var(--ink, #1e1a16);
+}
+
+.mood-display {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.mood-label {
+  font-size: 0.95rem;
+  color: var(--ink-soft, #5a4f45);
+}
+
+.mood-selector {
+  display: flex;
+  gap: 8px;
+}
+
+.mood-btn {
+  font-size: 1.6rem;
+  background: none;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  padding: 4px 6px;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+  line-height: 1;
+}
+
+.mood-btn:hover {
+  transform: scale(1.2);
+}
+
+.mood-btn.active {
+  border-color: var(--moss, #5a7a5a);
+  background: var(--moss-pale, #e4eee4);
+}
+
+.current-mood {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--moss, #5a7a5a);
+  background: var(--moss-pale, #e4eee4);
+  padding: 4px 14px;
+  border-radius: 20px;
+}
+
+.logout-btn {
+  background: #d32f2f;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 0.95rem;
+}
+
+.logout-btn:hover {
+  background: #b71c1c;
+}
+
+/* --- Sections common --- */
+.dashboard-events,
+.dashboard-appointments {
+  padding: 48px 0;
+  border-bottom: 1px solid var(--sand-dark, #e8e0d8);
+}
+
+.dashboard-events:last-of-type,
+.dashboard-appointments:last-of-type {
+  border-bottom: none;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.section-header h2 {
+  font-size: 1.4rem;
+  color: var(--ink, #1e1a16);
+}
+
+.section-header .btn-ghost {
+  font-size: 0.9rem;
+}
+
+/* --- Event cards (compact variant) --- */
+.event-card.compact {
+  background: var(--white, #ffffff);
+  border: 1px solid var(--sand-dark, #e8e0d8);
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  transition: box-shadow 0.2s;
+}
+
+.event-card.compact:hover {
+  box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+}
+
+.event-card.compact .event-date {
+  flex-shrink: 0;
+  width: 54px;
+  height: 54px;
+  background: var(--moss-pale, #e4eee4);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.event-card.compact .event-day {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--moss, #5a7a5a);
+  line-height: 1;
+}
+
+.event-card.compact .event-mon {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--moss, #5a7a5a);
+  text-transform: uppercase;
+}
+
+.event-card.compact .event-body {
+  flex: 1;
+}
+
+.event-card.compact h3 {
+  font-size: 1rem;
+  margin-bottom: 4px;
+  color: var(--ink, #1e1a16);
+}
+
+.event-card.compact .event-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 0.8rem;
+  color: var(--mist, #887e72);
+}
+
+/* --- Appointment cards --- */
+.appointments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.appointment-card {
+  background: var(--white, #ffffff);
+  border: 1px solid var(--sand-dark, #e8e0d8);
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  transition: box-shadow 0.2s;
+}
+
+.appointment-card:hover {
+  box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+}
+
+.appt-date {
+  flex-shrink: 0;
+  width: 54px;
+  height: 54px;
+  background: var(--petal, #f7edf0);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.appt-day {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--terracotta, #b55a4b);
+  line-height: 1;
+}
+
+.appt-mon {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--terracotta, #b55a4b);
+  text-transform: uppercase;
+}
+
+.appt-body {
+  flex: 1;
+}
+
+.appt-body h4 {
+  font-size: 1rem;
+  color: var(--ink, #1e1a16);
+  margin-bottom: 2px;
+}
+
+.appt-body p {
+  font-size: 0.9rem;
+  color: var(--ink-soft, #5a4f45);
+  margin-bottom: 6px;
+}
+
+.appt-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 0.8rem;
+  color: var(--mist, #887e72);
+}
+
+/* --- Empty state --- */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  background: var(--sand, #f8f5f0);
+  border-radius: 16px;
+}
+
+.empty-state p {
+  margin-bottom: 16px;
+  color: var(--ink-soft, #5a4f45);
+}
+
+.empty-state .btn-primary {
+  display: inline-block;
+  padding: 10px 28px;
+  border-radius: 30px;
+  background: var(--ink, #1e1a16);
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.empty-state .btn-primary:hover {
+  background: #0b0a08;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .section-inner {
+    padding: 0 24px;
+  }
+  .user-greeting {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .mood-display {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .mood-selector {
+    flex-wrap: wrap;
+  }
+  .logout-btn {
+    align-self: flex-start;
+  }
+  .event-card.compact,
+  .appointment-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .event-date,
+  .appt-date {
+    flex-direction: row;
+    gap: 6px;
+    width: fit-content;
+    padding: 4px 12px;
+    height: auto;
+  }
+}

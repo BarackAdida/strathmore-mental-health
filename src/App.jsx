@@ -11,6 +11,7 @@ import Contact from './pages/Contact';
 import Ticket from './pages/Tickets';
 import BookAppointment from './pages/BookAppointment';
 import AuthApp from './auth/AuthApp';
+import Dashboard from './components/Dashboard';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/authentication" element={<AuthApp />} />
+        <Route path="/profile" element={<Dashboard />} />
         <Route path="/about" element={<About />} />
         <Route path="/features" element={<Features />} />
         <Route path="/how-it-works" element={<HowItWorks />} />
