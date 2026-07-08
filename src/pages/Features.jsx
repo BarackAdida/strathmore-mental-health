@@ -5,7 +5,7 @@ const features = [
   {
     icon: '📅',
     title: 'Anonymous Counselor Booking',
-    desc: 'Book a session with a Strathmore-licensed counselor using only your student ID. No names in public systems, no waiting room awkwardness.',
+    desc: 'Book a session with a MindBridge-licensed counselor using only your student ID. No names in public systems, no waiting room awkwardness.',
     tag: 'Privacy',
   },
   {
@@ -29,7 +29,7 @@ const features = [
   {
     icon: '📊',
     title: 'Counselor Analytics Dashboard',
-    desc: 'Strathmore’s Student Welfare team gets aggregate, anonymized insights to understand when and where students need more support.',
+    desc: 'MindBridge team gets aggregate, anonymized insights to understand when and where students need more support.',
     tag: 'For Institutions',
   },
   {

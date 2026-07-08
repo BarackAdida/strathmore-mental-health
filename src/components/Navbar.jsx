@@ -8,7 +8,7 @@ function Navbar() {
   return (
     <nav className="navbar">
       <NavLink to="/" className="nav-logo" onClick={() => setOpen(false)}>
-        Strathmore <span>Mental Health</span>
+        Mindbridge <span>Mental Health</span>
       </NavLink>
 
       <button className="nav-toggle" onClick={() => setOpen(!open)} aria-label="Toggle menu">

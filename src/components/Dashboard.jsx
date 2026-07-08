@@ -10,23 +10,19 @@ function Dashboard() {
   const [mood, setMood] = useLocalStorage('userMood', '😊');
   const [bookings] = useLocalStorage('bookings', []);
   const [events] = useLocalStorage('events', []);
-  const [appointments] = useLocalStorage('appointments', []); // assume stored as array of appointment objects
+  const [appointments] = useLocalStorage('appointments', []);
 
-  // If not logged in, redirect to login
   if (!currentUser) {
     navigate('/');
     return null;
   }
 
-  // Get the list of booked event objects
   const bookedEvents = events.filter(e => bookings.includes(e.id));
 
-  // Handle mood change
   const handleMoodSelect = (emoji) => {
     setMood(emoji);
   };
 
-  // Handle logout
   const handleLogout = () => {
     setCurrentUser(null);
     navigate('/');
@@ -34,7 +30,6 @@ function Dashboard() {
 
   return (
     <main className="dashboard">
-      {/* Header: username + mood */}
       <section className="dashboard-header">
         <div className="section-inner">
           <div className="user-greeting">

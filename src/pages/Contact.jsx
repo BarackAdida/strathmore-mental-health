@@ -3,7 +3,7 @@ import '../Styles/Contact.css'
 
 const contacts = [
   { icon: '🏛️', label: 'Student Welfare Office', value: 'Block C, Strathmore University', sub: 'Mon – Fri, 8am – 5pm' },
-  { icon: '📧', label: 'Email', value: 'wellness@strathmore.edu', sub: 'We respond within 24 hours' },
+  { icon: '📧', label: 'Email', value: 'mindbridge@gmail.com', sub: 'We respond within 24 hours' },
   { icon: '📞', label: 'Crisis Line', value: '0722 000 000', sub: 'Available 24 / 7' },
 ];
 
@@ -51,7 +51,7 @@ function Contact() {
 
             <div className="crisis-box">
               <div className="crisis-title">🆘 In immediate distress?</div>
-              <p>Don't wait for a form response. Call the Strathmore crisis line now: <strong>0722 000 000</strong>. Someone is always available.</p>
+              <p>Don't wait for a form response. Call the MindBridge crisis line now: <strong>0722 000 000</strong>. Someone is always available.</p>
             </div>
           </div>
 
@@ -60,7 +60,7 @@ function Contact() {
               <div className="form-success">
                 <div className="success-icon">✅</div>
                 <h3>Message received</h3>
-                <p>Thank you for reaching out. Someone from the Strathmore Mental Health team or Student Welfare will be in touch within 24 hours.</p>
+                <p>Thank you for reaching out. Someone from MindBridge Mental Health team or Student Welfare will be in touch within 24 hours.</p>
               </div>
             ) : (
               <form className="contact-form" onSubmit={handleSubmit}>
@@ -79,7 +79,7 @@ function Contact() {
                     <label htmlFor="email">Student email</label>
                     <input
                       id="email" name="email" type="email"
-                      placeholder="you@strathmore.edu"
+                      placeholder="you@gmail.com"
                       value={form.email} onChange={handleChange} required
                     />
                   </div>

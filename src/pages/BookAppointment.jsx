@@ -138,7 +138,7 @@ function BookAppointment() {
         <h1>Book an Appointment</h1>
         <p className="subtitle">
           Choose the type of support you need. All sessions are confidential and
-          free for Strathmore students.
+          free for Students.
         </p>
 
         <form onSubmit={handleSubmit} className="booking-form">

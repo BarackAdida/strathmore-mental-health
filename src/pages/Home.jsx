@@ -5,7 +5,7 @@ import '../Styles/Home.css';
 const stats = [
   { number: '1 in 4', label: 'Kenyan university students experience anxiety or depression' },
   { number: '72%',    label: 'Never seek help due to stigma or lack of access' },
-  { number: '5,000+', label: 'Strathmore students who deserve better support' },
+  { number: '5,000+', label: 'Students who deserve better support' },
 ];
 
 const pillars = [
@@ -17,7 +17,7 @@ const pillars = [
   {
     icon: '🤝',
     title: 'Peer Support',
-    desc: 'Connect with trained fellow Strathmore students who understand campus life firsthand.',
+    desc: 'Connect with trained fellow peers who understand campus life firsthand.',
   },
   {
     icon: '📱',
@@ -52,7 +52,7 @@ function Home() {
       {/* Hero */}
       <section className="hero">
         <div className="hero-content">
-          <div className="hero-eyebrow">For Strathmore University Students</div>
+          <div className="hero-eyebrow">For University Students</div>
           <h1>You don't have to carry this alone.</h1>
           <p>Strathmore Mental Health connects you to counselors, peers, and crisis support — anonymously, compassionately, and built for campus life.</p>
           <div className="hero-actions">
@@ -98,8 +98,8 @@ function Home() {
       {/* Pillars */}
       <section className="pillars-section">
         <div className="section-inner">
-          <div className="section-label">Why Strathmore Mental Health</div>
-          <h2>Care that fits around your life at Strathmore</h2>
+          <div className="section-label">Why MindBridge Mental Health</div>
+          <h2>Care that fits around your life at the University</h2>
           <div className="pillars-grid">
             {pillars.map((p, i) => (
               <div key={i} className="pillar-card">
@@ -116,7 +116,7 @@ function Home() {
       <section className="cta-banner">
         <div className="section-inner">
           <h2>Students get help before crisis — not after.</h2>
-          <p>Whether it's exam stress, homesickness, or something heavier — Strathmore Mental Health is here before it becomes overwhelming.</p>
+          <p>Whether it's exam stress, homesickness, or something heavier — MindBridge is here before it becomes overwhelming.</p>
           <Link to="/features" className="btn-primary">Explore the Platform</Link>
         </div>
       </section>
