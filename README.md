@@ -1,7 +1,5 @@
 ```markdown
-# Strathmore Mental Health Booking App
-
-A React-based web application for Strathmore University students to book confidential counseling appointments with peer supporters or psychologists.
+# MindBridge Mental Health Web
 
 ## Features
 
