@@ -14,7 +14,7 @@ function Dashboard() {
 
   // If not logged in, redirect to login
   if (!currentUser) {
-    navigate('/login');
+    navigate('/');
     return null;
   }
 

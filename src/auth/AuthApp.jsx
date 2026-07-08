@@ -14,10 +14,36 @@ function AuthApp() {
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState('');
 
-  // If already logged in, go to profile
+  // --- Seed admin user from .env on first load ---
+  useEffect(() => {
+    const adminUser = import.meta.env.VITE_ADMIN_USER;
+    const adminPass = import.meta.env.VITE_ADMIN_PASS;
+
+    // Only seed if env variables are set and admin not already in users
+    if (adminUser && adminPass) {
+      const adminExists = users.some(u => u.username === adminUser);
+      if (!adminExists) {
+        const admin = {
+          username: adminUser,
+          password: adminPass,
+          email: 'admin@example.com', // optional
+        };
+        setUsers([...users, admin]);
+        console.log('✅ Admin user seeded from .env');
+      }
+    }
+  }, []); // runs once on mount
+
+  // If already logged in, go to appropriate page
   useEffect(() => {
     if (currentUser) {
-      navigate('/profile');
+      // Check if the logged-in user is admin
+      const isAdmin = currentUser.username === import.meta.env.VITE_ADMIN_USER;
+      if (isAdmin) {
+        navigate('/admin');
+      } else {
+        navigate('/profile');
+      }
     }
   }, [currentUser, navigate]);
 
@@ -26,6 +52,7 @@ function AuthApp() {
     setError('');
 
     if (isLogin) {
+      // Find user (including admin, since it's in registeredUsers)
       const foundUser = users.find(
         (u) => u.username === username && u.password === password
       );
@@ -33,11 +60,19 @@ function AuthApp() {
         setCurrentUser({ username: foundUser.username });
         setUsername('');
         setPassword('');
-        navigate('/profile');
+        // Redirect will be handled by the useEffect above
       } else {
         setError('Invalid username or password');
       }
     } else {
+      // --- Registration ---
+      // Prevent creating a user with the reserved admin username
+      const adminUser = import.meta.env.VITE_ADMIN_USER;
+      if (username === adminUser) {
+        setError(`Username "${adminUser}" is reserved.`);
+        return;
+      }
+
       if (users.some((u) => u.username === username)) {
         setError('Username already taken');
         return;
@@ -52,7 +87,7 @@ function AuthApp() {
       setUsername('');
       setPassword('');
       setEmail('');
-      navigate('/profile');
+      // Redirect will be handled by useEffect
     }
   };
 

@@ -75,7 +75,7 @@ function BookAppointment() {
       let location = 'Strathmore University';
 
       if (appointmentType === 'peer') {
-        title = `Peer Support Session with ${peers[0].split('(')[0].trim()}`; // placeholder; we could assign random
+        // title = `Peer Support Session with ${peers[0].split('(')[0].trim()}`; 
         title = 'Peer Support Session';
         description = `Peer counseling session. ${form.notes || 'General check-in.'}`;
       } else if (appointmentType === 'random') {

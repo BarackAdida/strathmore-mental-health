@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLocalStorage } from '../context/hook/useLocalStorage';
-import '../Styles/AdminPage.css';
+import { useLocalStorage } from '../../context/hook/useLocalStorage';
+import '../../Styles/AdminPage.css';
 
 function AdminPage() {
   const navigate = useNavigate();
@@ -15,14 +15,8 @@ function AdminPage() {
     'Dr. Sarah Wanjiru',
   ]);
 
-  // Protect route: only admin
-  useEffect(() => {
-    if (!currentUser || currentUser.username !== 'admin') {
-      navigate('/');
-    }
-  }, [currentUser, navigate]);
-
-  // --- Event state ---
+  const [isLoading, setIsLoading] = useState(true);
+  
   const [eventForm, setEventForm] = useState({
     title: '',
     desc: '',
@@ -33,6 +27,19 @@ function AdminPage() {
     day: '',
     mon: '',
   });
+
+  const [newPsychologist, setNewPsychologist] = useState('');
+
+  useEffect(() => {
+    if (!currentUser || currentUser.username !== 'admin') {
+      navigate('/');
+    }
+    setIsLoading(false);
+  }, [currentUser, navigate]);
+
+  if (isLoading) {
+    return null; 
+  }
 
   const handleEventChange = (e) => {
     setEventForm({ ...eventForm, [e.target.name]: e.target.value });
@@ -45,6 +52,15 @@ function AdminPage() {
       alert('Please fill all event fields.');
       return;
     }
+    if (isNaN(Number(price))) {
+      alert('Price must be a valid number.');
+      return;
+    }
+    if (day.length > 2 || mon.length > 3) {
+      alert('Day should be 1‑2 digits and month 3 letters (e.g. "08" and "JUL").');
+      return;
+    }
+
     const newEvent = {
       id: Date.now(),
       date: { day, mon: mon.toUpperCase() },
@@ -55,7 +71,7 @@ function AdminPage() {
       price,
       tag,
     };
-    setEvents([...events, newEvent]);
+    setEvents((prev) => [...prev, newEvent]);
     setEventForm({
       title: '',
       desc: '',
@@ -69,9 +85,6 @@ function AdminPage() {
     alert('Event added successfully!');
   };
 
-  // --- Psychologist state ---
-  const [newPsychologist, setNewPsychologist] = useState('');
-
   const handlePsychSubmit = (e) => {
     e.preventDefault();
     const name = newPsychologist.trim();
@@ -79,29 +92,30 @@ function AdminPage() {
       alert('Please enter a psychologist name.');
       return;
     }
-    if (psychologists.includes(name)) {
-      alert('This psychologist already exists.');
-      return;
-    }
-    setPsychologists([...psychologists, name]);
+    setPsychologists((prev) => {
+      if (prev.includes(name)) {
+        alert('This psychologist already exists.');
+        return prev;
+      }
+      return [...prev, name];
+    });
     setNewPsychologist('');
     alert('Psychologist added successfully!');
   };
 
-  // --- Delete psychologist (optional) ---
   const deletePsychologist = (name) => {
     if (window.confirm(`Remove ${name}?`)) {
-      setPsychologists(psychologists.filter(p => p !== name));
+      setPsychologists((prev) => prev.filter((p) => p !== name));
     }
   };
 
-  // --- Delete event (optional) ---
   const deleteEvent = (id) => {
     if (window.confirm('Delete this event?')) {
-      setEvents(events.filter(e => e.id !== id));
+      setEvents((prev) => prev.filter((e) => e.id !== id));
     }
   };
 
+  // ---- Render ----
   return (
     <main className="admin-page">
       <div className="admin-container">
@@ -209,7 +223,7 @@ function AdminPage() {
                 <p>No events yet.</p>
               ) : (
                 <ul>
-                  {events.map(e => (
+                  {events.map((e) => (
                     <li key={e.id}>
                       <span>{e.title} – {e.date.day} {e.date.mon}</span>
                       <button onClick={() => deleteEvent(e.id)} className="delete-btn">✕</button>
@@ -237,14 +251,13 @@ function AdminPage() {
               <button type="submit" className="admin-btn">Add Psychologist</button>
             </form>
 
-            {/* List existing psychologists */}
             <div className="existing-list">
               <h3>Existing Psychologists ({psychologists.length})</h3>
               {psychologists.length === 0 ? (
                 <p>No psychologists added yet.</p>
               ) : (
                 <ul>
-                  {psychologists.map(name => (
+                  {psychologists.map((name) => (
                     <li key={name}>
                       <span>{name}</span>
                       <button onClick={() => deletePsychologist(name)} className="delete-btn">✕</button>
