@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useLocalStorage } from '../context/hook/useLocalStorage';
 import '../Styles/Features.css';
 
 const features = [
@@ -43,8 +44,8 @@ const features = [
 const plans = [
   {
     name: 'Basic',
-    price: '200',
-    cadence: 'Good for Students',
+    price: 'Free',
+    cadence: '',
     perk: 'Mental health newsletter — once a week',
     features: [
       'Full access to counselor booking & peer support',
@@ -57,7 +58,7 @@ const plans = [
   },
   {
     name: 'Premium',
-    price: 'KES 600',
+    price: 'KES 212',
     cadence: 'per semester',
     perk: 'Mental health newsletter — three times a week',
     features: [
@@ -72,34 +73,59 @@ const plans = [
 ];
 
 function Features() {
+  const [currentUser, setCurrentUser] = useLocalStorage('currentUser', null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [step, setStep] = useState(1);          // 1: payment method, 2: confirm, 3: loading, 4: success
+  const [modalStep, setModalStep] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [selectedPlan, setSelectedPlan] = useState('');
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
 
   const openModal = (planName) => {
+    if (!currentUser) {
+      alert('Please log in to subscribe.');
+      return;
+    }
     setSelectedPlan(planName);
     setModalOpen(true);
-    setStep(1);
     setPaymentMethod('card');
+
+    if (planName === 'Basic') {
+      setModalStep(3);
+      timerRef.current = setTimeout(() => {
+        setModalStep(4);
+        setCurrentUser({ ...currentUser, subscription: 'Basic' });
+      }, 1500);
+    } else {
+      setModalStep(1);
+    }
   };
 
   const closeModal = () => {
     setModalOpen(false);
-    setStep(1);
+    setModalStep(1);
     setPaymentMethod('card');
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
   };
 
   const handleConfirm = () => {
-    setStep(3); // show loading
-    // Simulate payment processing
-    setTimeout(() => {
-      setStep(4); // success
+    setModalStep(3);
+    timerRef.current = setTimeout(() => {
+      setModalStep(4);
+      setCurrentUser({ ...currentUser, subscription: 'Premium' });
     }, 2500);
   };
 
   const renderModalContent = () => {
-    switch (step) {
+    switch (modalStep) {
       case 1:
         return (
           <>
@@ -138,13 +164,12 @@ function Features() {
             </div>
             <button
               className="btn-primary modal-next"
-              onClick={() => setStep(2)}
+              onClick={() => setModalStep(2)}
             >
               Next
             </button>
           </>
         );
-
       case 2:
         return (
           <>
@@ -152,7 +177,7 @@ function Features() {
             <div className="modal-summary">
               <p><strong>Plan:</strong> {selectedPlan}</p>
               <p><strong>Payment Method:</strong> {paymentMethod}</p>
-              <p><strong>Amount:</strong> {selectedPlan === 'Premium' ? 'KES 300' : 'Free'}</p>
+              <p><strong>Amount:</strong> KES 212</p>
             </div>
             <button
               className="btn-primary modal-confirm"
@@ -162,16 +187,14 @@ function Features() {
             </button>
           </>
         );
-
       case 3:
         return (
           <>
-            <h3>Processing Payment...</h3>
+            <h3>Processing…</h3>
             <div className="modal-spinner"></div>
-            <p>Please wait a moment</p>
+            <p>{selectedPlan === 'Basic' ? 'Activating your free subscription…' : 'Please wait a moment'}</p>
           </>
         );
-
       case 4:
         return (
           <>
@@ -182,7 +205,7 @@ function Features() {
                   <path className="checkmark-check" d="M14 27l7 7 16-16" />
                 </svg>
               </div>
-              <h3>Payment Confirmed!</h3>
+              <h3>Subscribed!</h3>
               <p>You are now subscribed to <strong>{selectedPlan}</strong>.</p>
             </div>
             <button className="btn-primary modal-close" onClick={closeModal}>
@@ -190,7 +213,6 @@ function Features() {
             </button>
           </>
         );
-
       default:
         return null;
     }
@@ -198,12 +220,11 @@ function Features() {
 
   return (
     <main className="features">
-
       <section className="features-hero">
         <div className="section-inner">
           <div className="section-label">The Platform</div>
           <h1>Everything you need, nothing that exposes you</h1>
-          <p>Strathmore Mental Health is built around one principle: removing every barrier between a student in distress and the support they need.</p>
+          <p>MindBridge is built around one principle: removing every barrier between a student in distress and the support they need.</p>
         </div>
       </section>
 
@@ -261,7 +282,7 @@ function Features() {
           <div className="highlight-text">
             <div className="section-label">Built for Exam Season</div>
             <h2>Support scales when you need it most</h2>
-            <p>CATs, finals, project deadlines — Strathmore Mental Health detects when campus stress peaks and automatically adds counselor slots and peer volunteers. You're never left waiting when it matters most.</p>
+            <p>CATs, finals, project deadlines — MindBridge detects when campus stress peaks and automatically adds counselor slots and peer volunteers. You're never left waiting when it matters most.</p>
           </div>
           <div className="highlight-visual">
             <div className="mini-card">
@@ -277,7 +298,6 @@ function Features() {
         </div>
       </section>
 
-      {/* Modal */}
       {modalOpen && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -288,7 +308,6 @@ function Features() {
           </div>
         </div>
       )}
-
     </main>
   );
 }

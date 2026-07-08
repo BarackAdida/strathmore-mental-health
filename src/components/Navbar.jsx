@@ -22,11 +22,11 @@ function Navbar() {
           { to: '/',                label: 'Home' },
           { to: '/about',           label: 'About' },
           { to: '/features',        label: 'Features' },
-          { to: '/how-it-works',    label: 'How It Works' },
           { to: '/events',          label: 'Events' },
           { to: '/book-appointment', label: 'Book Appointment' }, // 👈 new link
           { to: '/donate',          label: 'Donate' },
           { to: '/contact',         label: 'Contact' },
+          { to: '/authentication',    label: 'Login' },
         ].map(({ to, label }) => (
           <li key={to}>
             <NavLink

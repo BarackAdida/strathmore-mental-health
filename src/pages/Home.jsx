@@ -1,6 +1,14 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../Styles/Home.css';
+import mindbridgeImg from '../assets/mindbridge.png';
+import eventsImg from '../assets/events.png';
+import subscriptionsImg from '../assets/subscriptions.png';
+
+const useAuth = () => {
+  const token = localStorage.getItem('authToken');
+  return !!token;
+};
 
 const stats = [
   { number: '1 in 4', label: 'Kenyan university students experience anxiety or depression' },
@@ -8,28 +16,43 @@ const stats = [
   { number: '5,000+', label: 'Students who deserve better support' },
 ];
 
-const pillars = [
+const featuresList = [
   {
     icon: '🔒',
     title: 'Fully Anonymous',
     desc: 'Book a counselor without anyone seeing you walk into an office. Your identity stays yours.',
+    link: '/book-appointment',
+    actionText: 'Book Private Session'
   },
   {
     icon: '🤝',
-    title: 'Peer Support',
-    desc: 'Connect with trained fellow peers who understand campus life firsthand.',
+    title: 'Peer Support & Community',
+    desc: 'Connect with trained fellow peers who understand campus life firsthand and attend group safe-spaces.',
+    link: '/events',
+    actionText: 'View Upcoming Events'
   },
   {
     icon: '📱',
     title: 'Always Available',
     desc: 'Daily mood check-ins, crisis resources, and real-time counselor availability — in your pocket.',
+    link: '/features',
+    actionText: 'Explore Features'
   },
 ];
 
 function Home() {
   const navigate = useNavigate();
+  const isAuthenticated = useAuth();
   const [moodModalOpen, setMoodModalOpen] = useState(false);
   const [selectedMood, setSelectedMood] = useState('');
+
+  const handleDashboardRedirect = () => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    } else {
+      navigate('/authentication');
+    }
+  };
 
   const handleMoodClick = (emoji) => {
     setSelectedMood(emoji);
@@ -47,92 +70,126 @@ function Home() {
   };
 
   return (  
-    <main className="home">
+    <main className="home-container">
 
-      {/* Hero */}
-      <section className="hero">
-        <div className="hero-content">
-          <div className="hero-eyebrow">For University Students</div>
-          <h1>You don't have to carry this alone.</h1>
-          <p>Strathmore Mental Health connects you to counselors, peers, and crisis support — anonymously, compassionately, and built for campus life.</p>
-          <div className="hero-actions">
-            <Link to="/how-it-works" className="btn-primary">See How It Works</Link>
-            <Link to="/contact" className="btn-ghost">Talk to Someone Now</Link>
+      <section className="hero-split">
+        <div className="hero-text-content">
+          <div className="hero-eyebrow-tag">MindBridge Mental Health</div>
+          <h1>You don't have to carry campus life alone.</h1>
+          <p>Anonymously connect with certified university counselors, find peer support networks, and access mental health resources tailored for you.</p>
+          
+          <div className="hero-action-cluster">
+            <button onClick={handleDashboardRedirect} className="btn-primary-large">
+              {isAuthenticated ? 'Go to My Dashboard' : 'Get Started (Join MindBridge)'}
+            </button>
+            <Link to="/book-appointment" className="btn-secondary-large">Talk to Someone Now</Link>
+          </div>
+
+          <div className="hero-subtext-links">
+            <span>Already a member?</span> 
+            <Link to="/authentication" className="text-link">Login here</Link>
           </div>
         </div>
-        <div className="hero-visual">
-          <div className="hero-card card-float">
-            <div className="hcard-label">Today's check-in</div>
-            <div className="mood-row">
+
+        <div className="hero-image-side">
+          <div className="main-hero-illustration">
+            <img src={mindbridgeImg} alt="MindBridge Concept Illustration" className="hero-inserted-img" />
+            <div className="img-overlay-badge">🧠 Bridging Minds, Saving Lives</div>
+          </div>
+          
+          <div className="floating-mood-card">
+            <h4>Today's check-in</h4>
+            <div className="mood-emoji-row">
               {['😔','😐','🙂','😊','😄'].map((e, i) => (
-                <button 
-                  key={i} 
-                  className="mood-btn"
-                  onClick={() => handleMoodClick(e)}
-                >
+                <button key={i} className="mood-emoji-btn" onClick={() => handleMoodClick(e)}>
                   {e}
                 </button>
               ))}
             </div>
-            <div className="hcard-note">How are you feeling today? It's okay to say.</div>
-          </div>
-          <div className="hero-card card-float card-delay">
-            <div className="hcard-label">✅ Session booked</div>
-            <p className="hcard-note">Your counselor appointment is confirmed for <strong>Thursday, 2pm</strong>. No one else can see this.</p>
+            <p className="mood-card-sub">How are you feeling today? It's okay to say.</p>
           </div>
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="stats-section">
-        <div className="stats-inner">
+      <section className="metrics-bar">
+        <div className="metrics-grid">
           {stats.map((s, i) => (
-            <div key={i} className="stat-item">
-              <div className="stat-number">{s.number}</div>
-              <div className="stat-label">{s.label}</div>
+            <div key={i} className="metric-card">
+              <span className="metric-huge-num">{s.number}</span>
+              <p className="metric-desc">{s.label}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Pillars */}
-      <section className="pillars-section">
-        <div className="section-inner">
-          <div className="section-label">Why MindBridge Mental Health</div>
+      <section className="platform-features-section">
+        <div className="section-header-centered">
           <h2>Care that fits around your life at the University</h2>
-          <div className="pillars-grid">
-            {pillars.map((p, i) => (
-              <div key={i} className="pillar-card">
-                <div className="pillar-icon">{p.icon}</div>
-                <h3>{p.title}</h3>
-                <p>{p.desc}</p>
-              </div>
-            ))}
+          <p>Explore our tools built exclusively to handle exam stress, relationships, anxiety, and everything in between.</p>
+        </div>
+
+        <div className="features-showcase-grid">
+          {featuresList.map((item, index) => (
+            <div key={index} className="feature-interactive-card">
+              <div className="feature-icon-wrapper">{item.icon}</div>
+              <h3>{item.title}</h3>
+              <p>{item.desc}</p>
+              <Link to={item.link} className="feature-card-action-btn">
+                {item.actionText} <span>➔</span>
+              </Link>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="community-split-section">
+        <div className="split-side community-events-box">
+          <div className="split-image-container">
+            <img src={eventsImg} alt="Campus Events Illustration" className="split-inserted-img" />
+          </div>
+          <div className="split-content">
+            <h3>Safe Spaces & Peer Events</h3>
+            <p>Join group talk therapy, campus mental health panels, and mindfulness sessions run by peers.</p>
+            <Link to="/events" className="btn-accent-outline">Browse Campus Events</Link>
+          </div>
+        </div>
+
+        <div className="split-side premium-features-box">
+          <div className="split-image-container">
+            <img src={subscriptionsImg} alt="MindBridge Subscriptions Premium Illustration" className="split-inserted-img" />
+          </div>
+          <div className="split-content">
+            <h3>Unlock Premium MindBridge Features</h3>
+            <p>Get unlimited access to cognitive behavioral therapy (CBT) workbooks, audio relaxation tracks, and priority queues.</p>
+            <Link to="/features" className="btn-accent-solid">Explore Premium Plans</Link>
           </div>
         </div>
       </section>
 
-      {/* CTA Banner */}
-      <section className="cta-banner">
-        <div className="section-inner">
-          <h2>Students get help before crisis — not after.</h2>
-          <p>Whether it's exam stress, homesickness, or something heavier — MindBridge is here before it becomes overwhelming.</p>
-          <Link to="/features" className="btn-primary">Explore the Platform</Link>
+      <section className="donation-impact-banner">
+        <div className="donation-banner-image-mesh"></div>
+        <div className="donation-banner-content">
+          <h2>Help Us Keep MindBridge Free & Accessible</h2>
+          <p>Every single contribution goes directly toward paying student peer counselors and scaling server architectures to maintain complete identity anonymity for thousands of Kenyan students.</p>
+          <div className="donation-button-group">
+            <Link to="/donate" className="btn-donation-primary">Make a Secure Donation</Link>
+            <span className="donation-impact-metric">Over 5,000+ Students supported this semester alone.</span>
+          </div>
         </div>
       </section>
 
-      {/* Mood Modal */}
       {moodModalOpen && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal mood-modal" onClick={(e) => e.stopPropagation()}>
-            <h2>You selected {selectedMood}</h2>
-            <p>Do you want to talk to someone about how you're feeling?</p>
-            <div className="modal-actions">
-              <button className="btn-primary" onClick={handleTalkYes}>
-                Yes, connect me
+        <div className="modal-overlay-backdrop" onClick={closeModal}>
+          <div className="modal-content-card" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-graphic-header">✨ You logged: {selectedMood}</div>
+            <h2>Want a safe space to talk it through?</h2>
+            <p>No judgments, no tracking, completely confidential. We can pair you up with an online peer or counselor right away.</p>
+            <div className="modal-cta-buttons">
+              <button className="btn-modal-confirm" onClick={handleTalkYes}>
+                Yes, connect me anonymously
               </button>
-              <button className="btn-ghost" onClick={closeModal}>
-                No, thanks
+              <button className="btn-modal-dismiss" onClick={closeModal}>
+                No, just checking in
               </button>
             </div>
           </div>

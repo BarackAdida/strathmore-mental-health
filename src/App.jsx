@@ -5,7 +5,6 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import About from './pages/About';
 import Features from './pages/Features';
-import HowItWorks from './pages/HowItWorks';
 import Events from './pages/Events';
 import Donate from './pages/Donate';
 import Contact from './pages/Contact';
@@ -17,7 +16,6 @@ import AdminPage from './pages/Admin/AdminPage';
 
 function App() {
    useEffect(() => {
-    // Seed admin user if not present
     const users = JSON.parse(localStorage.getItem('users')) || [];
     const adminUser = import.meta.env.VITE_ADMIN_USER;
     const adminPass = import.meta.env.VITE_ADMIN_PASS;
@@ -43,7 +41,6 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/features" element={<Features />} />
-        <Route path="/how-it-works" element={<HowItWorks />} />
         <Route path="/events" element={<Events />} />
         <Route path="/donate" element={<Donate />} />
         <Route path="/contact" element={<Contact />} />
