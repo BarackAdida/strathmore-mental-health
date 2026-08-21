@@ -22,6 +22,7 @@ function Footer() {
               { to: '/events', label: 'Events' },
               { to: '/donate', label: 'Donate' },
               { to: '/contact', label: 'Contact' },
+              { to: '/login', label: 'Login' },
             ].map(({ to, label }) => (
               <li key={to}><NavLink to={to}>{label}</NavLink></li>
             ))}

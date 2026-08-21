@@ -14,7 +14,7 @@ const Signup = () => {
     setLoading(true);
 
     try {
-      const res = await fetch('http://localhost:5000/api/auth/signup', {
+      const res = await fetch('http://localhost:3000/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -25,7 +25,12 @@ const Signup = () => {
       if (!res.ok) throw new Error(data.error || 'Signup failed');
 
       console.log('Signed up & logged in:', data.user);
-      window.location.href = '/dashboard';
+
+      if (data.user.is_admin) {
+        window.location.href = '/admin-dashboard';
+      } else {
+        window.location.href = '/dashboard';
+      }
     } catch (err) {
       setError(err.message);
     } finally {

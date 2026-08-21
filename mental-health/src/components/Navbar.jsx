@@ -25,7 +25,7 @@ function Navbar() {
           { to: '/how-it-works', label: 'How It Works' },
           { to: '/events',    label: 'Events' },
           { to: '/donate',    label: 'Donate' },
-          { to: '/contact',   label: 'Contact' },
+          { to: '/login',   label: 'Login' },
         ].map(({ to, label }) => (
           <li key={to}>
             <NavLink

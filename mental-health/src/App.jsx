@@ -6,11 +6,13 @@ import About from './pages/About';
 import Features from './pages/Features';
 import HowItWorks from './pages/HowItWorks';
 import Events from './pages/Events';
+import Dashboard from './pages/Dashboard';
 import Donate from './pages/Donate';
 import Contact from './pages/Contact';
 import Login from './Auth/Login';
 import Signup from './Auth/Signup';
 import DoctorsPage from './doctors/DoctorsPage';
+import AdminPage from './pages/Admin/AdminPage'
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
         <Route path="/events" element={<Events />} />
         <Route path="/donate" element={<Donate />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/admin-dashboard" element={<AdminPage />} />
       </Routes>
       <Footer />
     </BrowserRouter>
